@@ -1,39 +1,47 @@
-# Тестовые данные.
-TEST_DATA: list[tuple[int, str, bool]] = [
-    (44, 'success', True),
-    (16, 'failure', True),
-    (4, 'success', False),
-    (21, 'failure', False),
-]
+class Bird:
+    def __init__(self, name, size):
+        self.name = name
+        self.size = size
 
-BONUS: float = 1.1
-ANTIBONUS: float = 0.8
+    def describe(self, full=False):
+        return f'Размер птицы {self.name} — {self.size}.'
 
 
-def add_rep(current_rep: float, rep_points, buf_effect) -> float:
-    current_rep += rep_points
-    if buf_effect:
-        return current_rep * BONUS
-    return current_rep
+class Parrot(Bird):
+    def __init__(self, name, size, color):
+        super().__init__(name, size)
+        self.color = color
+
+    def describe(self, full=False):
+        if full:
+            return (f'Размер пингвина name из рода genus — size.'
+                    'Интересный факт: однажды группа геологов-разведчиков '
+                    'похитила пингвинье яйцо, и их принялась преследовать '
+                    'вся стая, не пытаясь, впрочем, при этом нападать. '
+                    'Посовещавшись, похитители вернули птицам яйцо, и те отстали.')
+        else:
+            super().describe()
 
 
-def remove_rep(current_rep: float, rep_points, debuf_effect) -> float:
-    current_rep -= rep_points
-    if debuf_effect:
-        return current_rep * ANTIBONUS
-    return current_rep
+class Penguin(Bird):
+    def __init__(self, name, size, genus):
+        super().__init__(name, size)
+        self.genus = genus
+    
+    def describe(self, full=False):
+        if full:
+            return (f'Размер пингвина {self.name} из рода {self.genus} — {self.size}.'
+                    'Интересный факт: однажды группа геологов-разведчиков '
+                    'похитила пингвинье яйцо, и их принялась преследовать '
+                    'вся стая, не пытаясь, впрочем, при этом нападать. '
+                    'Посовещавшись, похитители вернули птицам яйцо, и те отстали.')
+        else:
+            super().describe()
 
 
-def main(duel_res):
-    current_rep: float = 0.0
-    for rep, result, effect in duel_res:
-        if result == 'success':
-            current_rep = add_rep(current_rep, rep, effect)
-        if result == 'failure':
-            current_rep = remove_rep(current_rep, rep, effect)
-    return (f'После {len(duel_res)} поединков, '
-            f'репутация персонажа — {current_rep:.3f} очков.')
+kesha = Parrot('Ара', 'средний', 'красный')
+kowalski = Penguin('Королевский', 'большой', 'Aptenodytes')
 
-
-# Тестовый вызов функции main.
-print(main(TEST_DATA))
+# Вызов метода у созданных объектов.
+print(kesha.describe())
+print(kowalski.describe(True))
